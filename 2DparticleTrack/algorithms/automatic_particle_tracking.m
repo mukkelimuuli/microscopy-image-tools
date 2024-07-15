@@ -43,7 +43,7 @@ for i=1:le
 end
 
 
-%By uncommenting rows 42-47, one can get all the windows which 
+%By uncommenting rows 49-54, one can get all the windows which 
 %the calculations are done with shown in a single subwplot image.
 % 
 % figure;
