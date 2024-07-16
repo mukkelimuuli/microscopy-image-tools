@@ -113,7 +113,7 @@ end
 %The folder where this file runs is chosen to be the directory for saving
 %the output files. One can alternate the folder name e.g. if multiple runs 
 %are needed.
-[folder, ~, ~] = fileparts(which('automatic_particle_tracking.m'));
+[folder, ~, ~] = fileparts(which('twoDparticleTracking.m'));
 
 %change this if multiple runs needed
 %                   |

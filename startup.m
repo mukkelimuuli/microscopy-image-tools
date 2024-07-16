@@ -1,5 +1,7 @@
-disp("MATrix LABoratory is love, MATrix LABoratory is life");
+disp("Welcome back to MATrix LABoratory");
 [folder, ~, ~] = fileparts(which('startup.m'));
 addpath(folder+"\2DparticleTrack")
 addpath(folder+"\2DparticleTrack\algorithms")
-addpath(folder+"\2DparticleTrack\bfmatlab")
+addpath(folder+"\3DsurfaceMap")
+addpath(folder+"\bfmatlab")
+addpath(folder+"\bfmatlab\fileReading")

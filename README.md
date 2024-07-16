@@ -1,17 +1,20 @@
-# microscopy-image-tools
+# microscopy-image-tools overview
 
-Here you can find overall explanations of the tools in microscopy-image-tools repository, more specific explanation of used methods and code can be found from the files.
+Here you can find overall explanations of the tools in microscopy-image-tools repository, more specific explanation of used methods and code can be found from the files. The tools are combinations of algorithms (developed by professionals) I found suitable for the purpose and algorithms made by me.
+
+The bfmatlab folder contains a MATLAB package which is needed for opening and reading the microscopy files, all tools use this package.
+
+-startup.m file needs to be moved to the MATLAB root folder, since its sole purpose is to add the files used by the tools into the MATLAB path so the user doesn't need to worry about that. Startup.m is then run every time the user starts MATLAB and thus the files are always on the path i.e. MATLAB can run them when they are needed.
 
 
-# twoDparticleTracking version 2.0
+# 2DparticleTrack version 2.0
 
 
 General comments:
 
--THE ONLY FILE WHICH NEEDS TO BE RUN IS twoDparticleTracking.m, other files only need to be on the MATLAB path.
--The bfmatlab folder contains a MATLAB package which is needed for opening the microscopy files. 
--2DparticleTrack folder contains 2 dimensional particle tracking algorithm for microscopy image series i.e. 2D particle tracking in time dimension. The folder is a combination of algorithms (developed by professionals) I found suitable for the purpose and algorithms made by me.
--startup.m file needs to be moved to the MATLAB root folder, since its sole purpose is to direct the files in the 2DparticleTrack directory into the MATLAB path so the user doesn't need to worry about that. Startup.m is then run every time the user starts MATLAB and thus the files are always on the path i.e. MATLAB can run them when they are needed.
+-2DparticleTrack folder contains 2 dimensional particle tracking algorithm for microscopy image series i.e. 2D particle tracking in time dimension. 
+-THE ONLY FILE WHICH NEEDS TO BE RUN IS twoDparticleTracking.m, other files only need to be on the MATLAB path. 
+
 
 Adjustable parameters in the tool by files:
 
@@ -30,9 +33,19 @@ dbscan_clustering.m
 *eps i.e. the epsilon value of dbscan clustering alorithm, determines the distance from the calculated point
 *minpts, minimum points, which need to be inside the distance determined by eps for the "point cloud" to be defined as a cluster 
 
-
-
 Version 2.0 can only read .oir files
 
 
-# Other tools (incoming)
+# 3DsurfaceMapping
+
+
+General comments:
+
+-3DsurfaceMapping folder contains 3D dimensional surface mapping of the apical side of the cell surface.
+-THE ONLY FILE WHICH NEEDS TO BE RUN IS apical_surface_to_tif_output.m, other files only need to be on the MATLAB path.
+
+
+Adjustable parameters in the tool by files:
+
+apical_surface_to_tif_output.m
+*isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
