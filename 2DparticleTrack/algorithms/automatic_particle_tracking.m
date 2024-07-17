@@ -29,8 +29,16 @@ points_index_centers={};
 cluster_nbr={};
 for i=1:le
     points_index_centers{end+1} =dbscan_clustering(...
-        imbinarize(squeeze(window_series(:,:,i))),i,false);
+        imbinarize(squeeze(window_series(:,:,i))),i,true);
+    
     cluster_nbr{end+1}=unique(points_index_centers{i}(:,3));
+    if cluster_nbr{i}==-1
+        error("Time point "+i+" clustering doesn't provide proper" + ...
+            " clusters since the particle is too small, adjust the " + ...
+            "clustering parameters or select different time points/" + ...
+            "section of the image. One can check the clustering process" + ...
+            " by changing row 32 parameter false --> true.")
+    end
 end
 
 %Searching for the centers of the clustered points by using the
@@ -43,7 +51,7 @@ for i=1:le
 end
 
 
-%By uncommenting rows 49-54, one can get all the windows which 
+%By uncommenting rows 42-47, one can get all the windows which 
 %the calculations are done with shown in a single subwplot image.
 % 
 % figure;
@@ -89,7 +97,16 @@ figure;
 imshow(combine_tracing_and_image(chosen_series(:,:,1),...
     zeros(size(chosen_series(:,:,1))),1))
 
-gif('window_tracing.gif','DelayTime',1/2,'LoopCount',10)
+
+
+%The folder where this file runs is chosen to be the directory for saving
+%the output files. One can alternate the folder name e.g. if multiple runs 
+%are needed.
+[folder, ~, ~] = fileparts(which('automatic_particle_tracking.m'));
+foldername='particle_tracking_files';
+mkdir(folder,foldername);
+
+gif(strcat(folder,'\',foldername,'\window_tracing.gif'),'DelayTime',1/2,'LoopCount',10)
 for i=1:le-1
     for j=1:n_tracks
         if ~isempty(tracing_points{i+1,j})
@@ -110,16 +127,6 @@ for i=1:le-1
 end
 
 
-%The folder where this file runs is chosen to be the directory for saving
-%the output files. One can alternate the folder name e.g. if multiple runs 
-%are needed.
-[folder, ~, ~] = fileparts(which('twoDparticleTracking.m'));
-
-%change this if multiple runs needed
-%                   |
-%                   v
-foldername='particle_tracking_files';
-mkdir(folder,foldername);
 
 %Saving the last image of the gif
 imwrite(cImg,folder+"\"+foldername+"\last_image_of_gif.png")
