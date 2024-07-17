@@ -46,6 +46,9 @@ _dbscan_clustering.m_
 
 Note that version 2.0 can only read .oir files 😥
 
+![An example of the result of the tool](image.png)
+
+![Another one](image-1.png)
 
 ## 3DsurfaceMapping
 
