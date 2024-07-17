@@ -44,7 +44,7 @@ _dbscan_clustering.m_
 
     * minpts, minimum points, which need to be inside the distance determined by eps for the "point cloud" to be defined as a cluster 
 
-Note that version 2.0 can only read .oir files! :U+1F631: 	
+Note that version 2.0 can only read .oir files 😥
 
 
 ## 3DsurfaceMapping
