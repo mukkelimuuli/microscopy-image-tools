@@ -48,9 +48,9 @@ Note that version 2.0 can only read .oir files 😥
 
 ### Example outputs
 
-![An example of the result of the tool](image-2.png)
+![An example of the result of the tool](example_images/image-2.png)
 
-![Another one](image-1.png)
+![Another one](example_images/image-1.png)
 
 ## 3DsurfaceMapping
 
@@ -70,6 +70,6 @@ _apical_surface_to_tif_output.m_
 
 ### Example outputs
 
-![An example image for 3DsurfaceMapping](image-3.png)
+![An example image for 3DsurfaceMapping](example_images/image-3.png)
 
-![Euclidean distance map](image-4.png)
+![Euclidean distance map](example_images/image-4.png)
