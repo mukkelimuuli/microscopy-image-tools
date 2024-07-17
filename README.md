@@ -46,7 +46,9 @@ _dbscan_clustering.m_
 
 Note that version 2.0 can only read .oir files 😥
 
-![An example of the result of the tool](image.png)
+### Example outputs
+
+![An example of the result of the tool](image-2.png)
 
 ![Another one](image-1.png)
 
@@ -65,3 +67,9 @@ Note that version 2.0 can only read .oir files 😥
 _apical_surface_to_tif_output.m_
 
     *isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
+
+### Example outputs
+
+![An example image for 3DsurfaceMapping](image-3.png)
+
+![Euclidean distance map](image-4.png)
