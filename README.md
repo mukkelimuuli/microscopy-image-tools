@@ -21,28 +21,28 @@ The startup.m file needs to be moved to the MATLAB root folder, since its sole p
 
 _twoDparticleTracking.m_
 
-    * Channel which is extracted (row 21)
+* Channel which is extracted (row 21)
 
-    * Timepoints which are extracted (row 31)
+* Timepoints which are extracted (row 31)
 
-    * Intensity threshold (row 50)
+* Intensity threshold (row 50)
 
-    * c i.e. the coefficient which determines the window size (row 81)
+* c i.e. the coefficient which determines the window size (row 81)
 
 _automatic_particle_tracking.m_
 
-    * max linking distance of adjacent tracking points (row 20)
+* max linking distance of adjacent tracking points (row 20)
 
-    * false can be turned into true --> shows clustering for each timepoint done by dbscan clustering algorithm (row 32 inside the function call)
+* false can be turned into true --> shows clustering for each timepoint done by dbscan clustering algorithm (row 32 inside the function call)
 
-    *foldername (row 121)
+* foldername (row 121)
 
 
 _dbscan_clustering.m_
 
-    * eps i.e. the epsilon value of dbscan clustering alorithm, determines the distance from the calculated point
+* eps i.e. the epsilon value of dbscan clustering alorithm, determines the distance from the calculated point
 
-    * minpts, minimum points, which need to be inside the distance determined by eps for the "point cloud" to be defined as a cluster 
+* minpts, minimum points, which need to be inside the distance determined by eps for the "point cloud" to be defined as a cluster 
 
 Note that version 2.0 can only read .oir files 😥
 
@@ -66,7 +66,7 @@ Note that version 2.0 can only read .oir files 😥
 
 _apical_surface_to_tif_output.m_
 
-    *isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
+* isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
 
 ### Example outputs
 
