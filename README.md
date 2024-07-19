@@ -73,3 +73,6 @@ _apical_surface_to_tif_output.m_
 ![An example image for 3DsurfaceMapping](example_images/image-3.png)
 
 ![Euclidean distance map](example_images/image-4.png)
+
+
+**LICENSE: See license.txt file**
