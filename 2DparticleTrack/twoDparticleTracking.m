@@ -11,6 +11,12 @@
 fullpath = fullfile(pathname, filename);
 separateChannels=dataFromOir(fullpath,1);
 
+%Read the scale info from the file
+pixelPhysicalSize = bfGetReader(fullpath).getMetadataStore()...
+    .getPixelsPhysicalSizeX(0).value();
+pixPerUm=1/(pixelPhysicalSize.doubleValue);
+
+
 %Extracting only the second channel. If the particles which need tracking
 %are on some else channel, one needs to change the number accordingly(2 as
 %default).                        
@@ -28,7 +34,7 @@ series=squeeze(separateChannels(:,:,:,2));
 %                          |
 %                          |
 %                          v
-chosen_series=series(:,:,27:35);
+chosen_series=series(:,:,27:30);
 
 %%
 %Going through all the selected images from the series and thresholding
@@ -52,8 +58,12 @@ intensity_threshold=1200;
 %Morpheus decision on automatic or manual
 choice=myGUI;
 
+
+if choice ==-1
+    error("Give Morpheus an answer.")
+
 %AUTOMATIC!!
-if choice ==0
+elseif choice==0
     liike=squeeze(chosen_series(:,:,1));
     liike(liike <= intensity_threshold ) = 0;
     imageSegmenter(rescale(liike,0,1));
@@ -80,7 +90,7 @@ if choice ==0
 
     c=30;
     automatic_particle_tracking(maskedImage,chosen_series,c,...
-        intensity_threshold)
+        intensity_threshold,pixelsPerMicrometer)
 
 %MANUAL!!    
 else

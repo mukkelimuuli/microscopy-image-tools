@@ -1,4 +1,5 @@
-function [pts_cell,sizes]=cluster_center_points(points_index_centers,clust_nbr)
+function [pts_cell,sizes]=cluster_center_points(points_index_centers,...
+    clust_nbr,varargin)
 
 %3D data!!
 if size(points_index_centers,2)==5
@@ -7,7 +8,7 @@ if size(points_index_centers,2)==5
     %UPSCALETTAA JOSSAIN KOHTI!! Samalla tavalla vaan ku tuo 2D, ei vaan
     %jaksanu tehä ku ei ollu ajankohtasta.. Pysyy mieli virkeenä ku jättää
     %paskahommia tulevaisuuteen ;)
-    pts_array=[0,0,0];
+    pts_cell={};
     
     sizes=0;
     for i=1:numel(clust_nbr)
@@ -23,7 +24,7 @@ if size(points_index_centers,2)==5
                 xval=round(((max(points_index_centers(idx,1))+min(points_index_centers(idx,1)))/2));
                 yval=round(((max(points_index_centers(idx,2))+min(points_index_centers(idx,2)))/2));
                 zval=round(((max(points_index_centers(idx,3))+min(points_index_centers(idx,3)))/2));
-                pts_array=[xval,yval,zval];
+                pts_cell={[xval,yval,zval]};
                 sizes=length(idx);
             end
         end
@@ -31,6 +32,10 @@ if size(points_index_centers,2)==5
     
 else 
     %2D data
+    
+    %For pixel --> micrometer conversion
+    pixA=(1/varargin{1})*(1/varargin{1});
+
     pts_cell=[];
     sizes=[];
     for i=1:length(clust_nbr)
@@ -39,7 +44,8 @@ else
             xval=round((max(points_index_centers(idx,1))+min(points_index_centers(idx,1)))/2);
             yval=round(((max(points_index_centers(idx,2))+min(points_index_centers(idx,2)))/2));
             pts_cell(end+1,1:2)=[xval,yval];
-            sizes(end+1,1)=length(idx);
+            sizes(end+1,1)=length(idx)*pixA;
+
         end
     end
 end

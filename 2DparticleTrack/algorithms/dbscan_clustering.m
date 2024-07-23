@@ -1,8 +1,7 @@
 function points_index_centers=dbscan_clustering(binarized,i,plots)
 
+%if plots == true, the segmentations are shown
 
-
-%tee 2D implementaatio samalla tavalla!
 if numel(size(binarized))==3
 
     %Find point coordinates from the 3D array
@@ -29,8 +28,6 @@ else
     [x,y]=find(binarized==1);
     [idx,centers]=dbscan([x,y],eps,minpts,"Distance","squaredeuclidean");
 
-    
-    %comment off if clusters wanted to be seen
     if plots ==true
         figure;
         scatter(y,x,50,idx,'filled')
@@ -40,10 +37,6 @@ else
         colorbar
     end
     points_index_centers=[x,y,idx,centers];
-    
-    
-
-    %MITEN SAA KÄÄNNETTYÄ 90 ASTETTA??
 end
 
 
