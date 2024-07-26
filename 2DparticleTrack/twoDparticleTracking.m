@@ -7,15 +7,14 @@
 %right side of this window in "Workspace".
 
 %Reading the file and separating the needed info from it
-[filename, pathname] = uigetfile('*.*', 'Select a File');
-fullpath = fullfile(pathname, filename);
-separateChannels=dataFromOir(fullpath,1);
+[fullPathsCell,ltc]=while_file_selection(1);
+separateChannels=file_selection(ltc,fullPathsCell{1},1);
+
 
 %Read the scale info from the file
-pixelPhysicalSize = bfGetReader(fullpath).getMetadataStore()...
+pixelPhysicalSize = bfGetReader(fullPathsCell{1}).getMetadataStore()...
     .getPixelsPhysicalSizeX(0).value();
 pixPerUm=1/(pixelPhysicalSize.doubleValue);
-
 
 %Extracting only the second channel. If the particles which need tracking
 %are on some else channel, one needs to change the number accordingly(2 as
@@ -34,7 +33,7 @@ series=squeeze(separateChannels(:,:,:,2));
 %                          |
 %                          |
 %                          v
-chosen_series=series(:,:,27:30);
+chosen_series=series(:,:,27:35);
 
 %%
 %Going through all the selected images from the series and thresholding
@@ -53,7 +52,15 @@ chosen_series=series(:,:,27:30);
 
 %intensity_threshold: the threshold which is used in intensity
 %thresholding the image to provide the best data for further processing.
-intensity_threshold=1200;
+%One should try different values if the image doesn't look good in the
+%segmentation window.
+if ltc=="czi"
+    intensity_threshold=200;        %?, not tested
+elseif ltc=="oir"
+    intensity_threshold=1200;
+else
+    intensity_threshold=60;         %?, not tested
+end
 
 %Morpheus decision on automatic or manual
 choice=myGUI;
@@ -90,7 +97,7 @@ elseif choice==0
 
     c=30;
     automatic_particle_tracking(maskedImage,chosen_series,c,...
-        intensity_threshold,pixelsPerMicrometer)
+        intensity_threshold,pixPerUm)
 
 %MANUAL!!    
 else
