@@ -50,7 +50,7 @@ for i=1:le
         points_index_centers{i},cluster_nbr{i},pixPerUm);    
 end
 
-%By uncommenting rows 42-47, one can get all the windows which 
+%By uncommenting rows 56-61, one can get all the windows which 
 %the calculations are done with shown in a single subwplot image.
 % 
 % figure;
@@ -188,9 +188,6 @@ grid(ax2,'minor')
 legend(ax1, 'show');
 legend(ax2, 'show');
 
-
-
-
 %Defining the structure dimensions by the longest array in the sizes cell
 row_lengths = cellfun(@(x) size(x, 1), sizes);
 max_row_length = max(row_lengths);
@@ -254,12 +251,10 @@ end
 
 disp("Results are ready in the "+ foldername+" folder.")
 
-
+    %Sets the params for the gif image scalbar and serial number
     function I=setparams(I,i)
-
         I=insertText(I,[450,20],i+1,FontSize=20, ...
-            BoxOpacity=0.0,TextColor="r");
-        
+            BoxOpacity=0.0,TextColor="r");        
         imshow(I, 'Parent',hAx)
         
         %Params for the scalebar
@@ -271,10 +266,7 @@ disp("Results are ready in the "+ foldername+" folder.")
         hScalebar.LineWidth=3;
         hScalebar.FontSize=16;
         hScalebar.FontName='comic sans';
-        
-        %tähän pitää kaivella arvo!!!! Ja pitää yleistää  +kaikkiin kuviin tiedot!!
-
-        
+       
     end
 end
 
