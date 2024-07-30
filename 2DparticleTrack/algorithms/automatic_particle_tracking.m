@@ -98,8 +98,8 @@ I=combine_tracing_and_image(chosen_series(:,:,1),...
     zeros(size(chosen_series(:,:,1))),1);
 setparams(I,0);
 
-
-
+scaled_intensity_threshold = intensity_threshold/max(chosen_series(:))...
+    *255;
 
 
 %The folder where this file runs is chosen to be the directory for saving
@@ -123,10 +123,9 @@ for i=1:le-1
         tracing,n_tracks);
     cImg=combine_tracing_and_image(chosen_series(:,:,i+1),zeros(...
         size(chosen_series(:,:,i+1))),n_tracks);
-    cImg(cImg <=40 ) = 0;
+    cImg(cImg <=scaled_intensity_threshold ) = 0;                                   
     cImg(pt(1)-c:pt(1)+c,pt(2)-c:pt(2)+c,:)=tracing_window;
     cImg=setparams(cImg,i);
-    %imshow(cImg,'parent',hAx);
     gif
 end
 

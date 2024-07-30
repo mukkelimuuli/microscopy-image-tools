@@ -24,7 +24,7 @@ function [fullPathsCell,lastThreeChars]=while_file_selection(varargin)
     disp("Selected Files: ")
     for i=1:numel(fullPathsCell)
         disp(fullPathsCell{i})
-        if lastThreeChars ~= "czi" && lastThreeChars ~="oir" && lastThreeChars ~= "nd2"
+        if lastThreeChars ~= "czi" && lastThreeChars ~="oir" && lastThreeChars ~= "nd2" && lastThreeChars ~="tif"
             error("Invalid input: Selected files were not microscopy files!") 
         end
         if extractAfter(fullPathsCell{i}, strlength(fullPathsCell{i}) - 3) ~=lastThreeChars

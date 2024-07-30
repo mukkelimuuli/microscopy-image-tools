@@ -1,5 +1,5 @@
 function separateChannels=file_selection(lastThreeChars,fullpath,varargin)
-    if lastThreeChars == "czi" || lastThreeChars =="oir" || lastThreeChars == "nd2"
+    if lastThreeChars == "czi" || lastThreeChars =="oir" || lastThreeChars == "nd2" || lastThreeChars=="tif"
         if lastThreeChars =="czi"
             %varargin determines if all the timepoints are used
             if ~isempty(varargin)
@@ -13,6 +13,8 @@ function separateChannels=file_selection(lastThreeChars,fullpath,varargin)
             else
                 separateChannels=dataFromOir(fullpath);
             end
+        elseif lastThreeChars == "tif"
+            separateChannels=tiffreadVolume(fullpath);
         else
             separateChannels=dataFromNd2(fullpath);
         end

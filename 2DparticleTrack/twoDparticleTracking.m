@@ -2,7 +2,7 @@
 % press CTRL+ENTER. You can see the left bar as blue when the section is 
 % selected. When it's run, run the next one similarly. 
 
-%When the segmentation is done, there is no need to run the first section
+%When the file reading is done, there is no need to run the first section
 %again since the variables are saved in the workspace you can see on the
 %right side of this window in "Workspace".
 
@@ -11,19 +11,23 @@
 separateChannels=file_selection(ltc,fullPathsCell{1},1);
 
 
-%Read the scale info from the file
-pixelPhysicalSize = bfGetReader(fullPathsCell{1}).getMetadataStore()...
-    .getPixelsPhysicalSizeX(0).value();
-pixPerUm=1/(pixelPhysicalSize.doubleValue);
+%number of the channel which in the particles are
+channel=2;
 
-%Extracting only the second channel. If the particles which need tracking
-%are on some else channel, one needs to change the number accordingly(2 as
-%default).                        
-%                                 changeable 
-%                                     |
-%                                     |
-%                                     v
-series=squeeze(separateChannels(:,:,:,2));
+if ltc ~="tif"
+    %Read the scale info from the file
+    pixelPhysicalSize = bfGetReader(fullPathsCell{1}).getMetadataStore()...
+        .getPixelsPhysicalSizeX(0).value();
+    pixPerUm=1/(pixelPhysicalSize.doubleValue);
+    
+    %Extracting only the second channel as defined before. If the particles
+    %which need tracking are on some else channel, one needs to change the 
+    %number accordingly (2 as default).                        
+
+    series=squeeze(separateChannels(:,:,:,channel));
+else
+    series=separateChannels(:,:,channel:3:end);
+end
 
 %Time series (in 27-35 as default), where the particle tracking is done
 %from the selected file, this needs to be changed based on e.g.
@@ -37,12 +41,16 @@ chosen_series=series(:,:,27:35);
 
 %%
 %Going through all the selected images from the series and thresholding
-%out intensities under the selected limit(1200 by default) for better
-%segmentation. For loop is used for segmentation if the user wants manual
-%segmentation e.g. if the automatic version doesn't provide accurate data.
+%out intensities under the selected limit (user can choose in a slider window) 
+%for better segmentation. For loop is used for segmentation if the user wants 
+%manual segmentation e.g. if the automatic version doesn't provide accurate data.
 %In the manual case the for loop goes through the images in a reverse order
 %so that after all windows are opened the first segmentation tool window is 
 %the first image of the series.
+
+%The segmentation is supposed to be done for a SINGLE PARTICLE ONLY, which is anchored
+%as a center point in automatic tracking and is the only tracked particle in the manual
+%version.
 
 %NOTICE: If automatic version is used, the variable name must be
 %"maskedImage", otherwise the particle tracking doesn't work since the
@@ -53,13 +61,24 @@ chosen_series=series(:,:,27:35);
 %intensity_threshold: the threshold which is used in intensity
 %thresholding the image to provide the best data for further processing.
 %One should try different values if the image doesn't look good in the
-%segmentation window.
-if ltc=="czi"
-    intensity_threshold=200;        %?, not tested
-elseif ltc=="oir"
-    intensity_threshold=1200;
+%segmentation window by using the threshold.
+
+answer=input("Do you want to choose the threshold yourself?(1 for yes/0 for no): ");
+
+if answer==1
+    chosen_threshold=threshold_slider(squeeze(chosen_series(:,:,1)));
+    if chosen_threshold==0
+        error("Error: Threshold was not chosen!")
+    end
+    intensity_threshold=chosen_threshold;
 else
-    intensity_threshold=60;         %?, not tested
+    if ltc=="czi"
+        intensity_threshold=200;        %?, not tested
+    elseif ltc=="oir"
+        intensity_threshold=1200;
+    else
+        intensity_threshold=60;         %?, not tested
+    end
 end
 
 %Morpheus decision on automatic or manual
@@ -81,8 +100,6 @@ elseif choice==0
     while size(maskedImage,1)==1
         pause(1);  % Check every 1 seconds
     end
-
-
 
     %  AUTOMATIC PARTICLE TRACKING ALGORITHM
 
