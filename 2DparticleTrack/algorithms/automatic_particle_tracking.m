@@ -123,7 +123,6 @@ foldername='particle_tracking_files';
 mkdir(folder,foldername);
 
 gif(strcat(folder,'\',foldername,'\window_tracing.gif'),'DelayTime',1/2,'LoopCount',10)
-size(tracing_points)
 
 %ALTERNATIIVI i:lle, AIJEMMIN OLI i=1:le-1
 for i=1:size(tracing_points,1)-1
