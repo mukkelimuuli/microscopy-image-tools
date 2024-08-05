@@ -243,7 +243,7 @@ A='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 %Creates a folder to the same directory as this file, outputs the data
 %there and locates the cells correctly into the file.
-fname=strcat(folder,'\',foldername,'\data_from_subplots.xls');
+fname=strcat(folder,'\',foldername,'\data_from_subplots.xlsx');
 
 writematrix("The distances (micrometers), where each row is a different time point," + ...
     " and each column is data from one particle ",fname)
