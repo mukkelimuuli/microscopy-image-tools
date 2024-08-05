@@ -42,7 +42,7 @@ points_index_centers={};
 cluster_nbr={};
 for i=1:le
     points_index_centers{end+1} =dbscan_clustering(...
-        imbinarize(squeeze(window_series(:,:,i))),i,true);     %<-- change false to true if segmentation images wanted
+        imbinarize(squeeze(window_series(:,:,i))),i,false);     %<-- change false to true if segmentation images wanted
     
     cluster_nbr{end+1}=unique(points_index_centers{i}(:,3));
     if cluster_nbr{i}==-1
@@ -123,8 +123,12 @@ foldername='particle_tracking_files';
 mkdir(folder,foldername);
 
 gif(strcat(folder,'\',foldername,'\window_tracing.gif'),'DelayTime',1/2,'LoopCount',10)
-for i=1:le-1
+size(tracing_points)
+
+%ALTERNATIIVI i:lle, AIJEMMIN OLI i=1:le-1
+for i=1:size(tracing_points,1)-1
     for j=1:n_tracks
+        %[i+1,j]
         if ~isempty(tracing_points{i+1,j})
             [x,y]= bresenham_2d(tracing_points{i,j}(1),...
                 tracing_points{i,j}(2),...
@@ -266,7 +270,11 @@ disp("Results are ready in the "+ foldername+" folder.")
 
     %Sets the params for the gif image scalbar and serial number
     function I=setparams(I,i)
-        I=insertText(I,[450,20],i+1,FontSize=20, ...
+        pixels=size(chosen_series,1);
+        edge=round(pixels*0.12);
+        
+
+        I=insertText(I,[pixels-edge,ceil(pixels*0.05)],i+1,FontSize=20, ...
             BoxOpacity=0.0,TextColor="r");        
         imshow(I, 'Parent',hAx)
         
