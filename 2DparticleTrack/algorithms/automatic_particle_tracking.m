@@ -4,32 +4,45 @@
 %and it will be saved in the same folder as this file.
 
 
-function automatic_particle_tracking(maskedImage,chosen_series,c, ...
+function automatic_particle_tracking(chosen_series, ...
     intensity_threshold,pixPerUm)
 
 %Searching for pixels which represent the segmented particle and uses its
 %center point as the center of the window defined later. The variable le 
 %is just the length of the time series for later use.
-[x,y]=find(maskedImage~=0);
-pt=[round(mean(x)),round(mean(y))];
+
+chosen_series(chosen_series <= intensity_threshold ) = 0;
+
+
+last_image=combine_tracing_and_image(squeeze(chosen_series(:,:,end)),...
+    zeros(size(squeeze(chosen_series(:,:,end)))),1);
+
+% ROI = [xmin,ymin,width,height]
+
+ROI=roi_selection(last_image);
+ROI(1:2)=round(ROI(1:2));
+ROI(3:4)=floor(ROI(3:4));
+
 le=size(chosen_series,3);
 
 %max_linking_distance: tells the max euclidean distance which the particles
 %can travel between the time points!!
-
 max_linking_distance =10; 
 
 %Taking a smaller window series to track moving points for clearer results
 % and thresholding the windows
-window_series=chosen_series(pt(1)-c:pt(1)+c,pt(2)-c:pt(2)+c,:);
+
+window_series=chosen_series(ROI(2):ROI(2)+ROI(4),...
+    ROI(1):ROI(1)+ROI(3),:);
 window_series(window_series <= intensity_threshold ) = 0;
+
 
 %Clustering all the points in the window for every time point
 points_index_centers={};
 cluster_nbr={};
 for i=1:le
     points_index_centers{end+1} =dbscan_clustering(...
-        imbinarize(squeeze(window_series(:,:,i))),i,false);
+        imbinarize(squeeze(window_series(:,:,i))),i,true);     %<-- change false to true if segmentation images wanted
     
     cluster_nbr{end+1}=unique(points_index_centers{i}(:,3));
     if cluster_nbr{i}==-1
@@ -119,12 +132,13 @@ for i=1:le-1
         end
         for k = 1:length(x);tracing(x(k), y(k))= j;end
     end
+
     tracing_window = combine_tracing_and_image(window_series(:, :, i+1),...
         tracing,n_tracks);
     cImg=combine_tracing_and_image(chosen_series(:,:,i+1),zeros(...
         size(chosen_series(:,:,i+1))),n_tracks);
     cImg(cImg <=scaled_intensity_threshold ) = 0;                                   
-    cImg(pt(1)-c:pt(1)+c,pt(2)-c:pt(2)+c,:)=tracing_window;
+    cImg(ROI(2):ROI(2)+ROI(4),ROI(1):ROI(1)+ROI(3),:)=tracing_window;
     cImg=setparams(cImg,i);
     gif
 end

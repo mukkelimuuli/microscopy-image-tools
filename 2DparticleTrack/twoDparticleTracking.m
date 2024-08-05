@@ -2,7 +2,7 @@
 % press CTRL+ENTER. You can see the left bar as blue when the section is 
 % selected. When it's run, run the next one similarly. 
 
-%When the file reading is done, there is no need to run the first section
+%When the segmentation is done, there is no need to run the first section
 %again since the variables are saved in the workspace you can see on the
 %right side of this window in "Workspace".
 
@@ -26,9 +26,10 @@ if ltc ~="tif"
 
     series=squeeze(separateChannels(:,:,:,channel));
 else
-    series=separateChannels(:,:,channel:3:end);
+    series=separateChannels(:,:,channel:3:end);                      %      <-- assumption of 3 channels
+    info=imfinfo(fullPathsCell{1,1});
+    pixPerUm=info.XResolution;
 end
-
 %Time series (in 27-35 as default), where the particle tracking is done
 %from the selected file, this needs to be changed based on e.g.
 %observations made using imageJ on the wanted part of the time series.
@@ -37,41 +38,39 @@ end
 %                          |
 %                          |
 %                          v
-chosen_series=series(:,:,27:35);
+chosen_series=series(:,:,27:40);
 
 %%
 %Going through all the selected images from the series and thresholding
-%out intensities under the selected limit (user can choose in a slider window) 
-%for better segmentation. For loop is used for segmentation if the user wants 
-%manual segmentation e.g. if the automatic version doesn't provide accurate data.
+%out intensities under the selected limit(1200 by default) for better
+%segmentation. For loop is used for segmentation if the user wants manual
+%segmentation e.g. if the automatic version doesn't provide accurate data.
 %In the manual case the for loop goes through the images in a reverse order
 %so that after all windows are opened the first segmentation tool window is 
 %the first image of the series.
 
-%The segmentation is supposed to be done for a SINGLE PARTICLE ONLY, which is anchored
-%as a center point in automatic tracking and is the only tracked particle in the manual
-%version.
-
 %NOTICE: If automatic version is used, the variable name must be
 %"maskedImage", otherwise the particle tracking doesn't work since the
-%parameter which is going into the automatic_particle tracking function is
+%parameter which is going into the automatic_particwle tracking function is
 %named as such.
 
 
 %intensity_threshold: the threshold which is used in intensity
 %thresholding the image to provide the best data for further processing.
 %One should try different values if the image doesn't look good in the
-%segmentation window by using the threshold.
+%segmentation window.
+
 
 answer=input("Do you want to choose the threshold yourself?(1 for yes/0 for no): ");
 
 if answer==1
-    chosen_threshold=threshold_slider(squeeze(chosen_series(:,:,1)));
+    chosen_threshold=threshold_slider(squeeze(chosen_series(:,:,end)));
     if chosen_threshold==0
         error("Error: Threshold was not chosen!")
     end
     intensity_threshold=chosen_threshold;
-else
+
+
     if ltc=="czi"
         intensity_threshold=200;        %?, not tested
     elseif ltc=="oir"
@@ -86,25 +85,25 @@ choice=myGUI;
 
 
 if choice ==-1
-    error("Give Morpheus an answer.")
+    error("Error: You must give Morpheus an answer..")
 
 %AUTOMATIC!!
 elseif choice==0
-    liike=squeeze(chosen_series(:,:,1));
-    liike(liike <= intensity_threshold ) = 0;
-    imageSegmenter(rescale(liike,0,1));
-    
-    maskedImage=0;
+%     liike=squeeze(chosen_series(:,:,1));
+%     liike(liike <= intensity_threshold ) = 0;
+%     imageSegmenter(rescale(liike,0,1));
+%     
+%     maskedImage=0;
 
     % Wait for the user to segment an image
-    while size(maskedImage,1)==1
-        pause(1);  % Check every 1 seconds
-    end
+%     while size(maskedImage,1)==1
+%         pause(1);  % Check every 1 seconds
+%     end
 
     %  AUTOMATIC PARTICLE TRACKING ALGORITHM
 
-    %c: coefficient which determines how big the window for the calculated
-    %particle paths
+    %c: coefficient which determines how big the window is for the 
+    %calculated particle paths
 
     %WARNING: The color coding doesn't work for large window sizes and there
     %might be different amounts of distance and particle size calculations due
@@ -112,13 +111,13 @@ elseif choice==0
     %and outside of the window. If c>40 this starts to happen more --> the data
     %becomes increasingly unreliable when the window size increases.
 
-    c=30;
-    automatic_particle_tracking(maskedImage,chosen_series,c,...
+%     c=30;
+    automatic_particle_tracking(chosen_series,...
         intensity_threshold,pixPerUm)
 
 %MANUAL!!    
 else
-    %MANUAL TRACKING, every image needs to be segmented and the based on
+    %MANUAL TRACKING, every image needs to be segmented and based on the
     %the segmentations the program calculates the same values. All the
     %segmentations need to be named as BW<nbr> and maskedImage<nbr>
     %where the nbr is a number which image is being segmented the first
