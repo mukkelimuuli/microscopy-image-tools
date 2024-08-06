@@ -24,9 +24,10 @@ if ltc ~="tif"
     %which need tracking are on some else channel, one needs to change the 
     %number accordingly (2 as default).                        
 
-    series=squeeze(separateChannels(:,:,:,channel));
+
+    series=squeeze(separateChannels(:,:,:,channel));    %comment this line
 else
-    series=separateChannels(:,:,channel:3:end);                      %      <-- assumption of 3 channels
+    series=separateChannels(:,:,channel:3:end);                      %      <-- assumption of 3 channels, if only one channle change 3->1
     info=imfinfo(fullPathsCell{1,1});
     pixPerUm=info.XResolution;
 end
