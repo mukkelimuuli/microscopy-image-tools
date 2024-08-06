@@ -7,7 +7,7 @@ The bfmatlab folder contains a MATLAB package which is needed for opening and re
 The startup.m file needs to be moved to the MATLAB root folder, since its sole purpose is to add the files used by the tools into the MATLAB path so the user doesn't need to worry about that. Startup.m is then run every time the user starts MATLAB and thus the files are always on the path i.e. MATLAB can run them when they are needed.
 
 
-## 2DparticleTrack version 2.0
+## 2DparticleTrack version 2.1
 
 
 **General comments:**
@@ -21,30 +21,27 @@ The startup.m file needs to be moved to the MATLAB root folder, since its sole p
 
 _twoDparticleTracking.m_
 
-* Channel which is extracted (row 21)
+* Channel which is extracted 
 
-* Timepoints which are extracted (row 31)
+* Timepoints which are extracted
 
-* Intensity threshold (row 50)
-
-* c i.e. the coefficient which determines the window size (row 81)
+* Intensity threshold
 
 _automatic_particle_tracking.m_
 
-* max linking distance of adjacent tracking points (row 20)
+* max linking distance of adjacent tracking points (row 30)
 
-* false can be turned into true --> shows clustering for each timepoint done by dbscan clustering algorithm (row 32 inside the function call)
+* false can be turned into true --> shows clustering for each timepoint done by dbscan clustering algorithm (row 44 inside the function call)
 
-* foldername (row 121)
+* foldername (row 122)
 
 
 _dbscan_clustering.m_
 
-* eps i.e. the epsilon value of dbscan clustering alorithm, determines the distance from the calculated point
+* eps i.e. the epsilon value of dbscan clustering alorithm, determines the distance for the neighbors from the calculated point
 
 * minpts, minimum points, which need to be inside the distance determined by eps for the "point cloud" to be defined as a cluster 
 
-Note that version 2.0 can only read .oir files 😥
 
 ### Example outputs
 
