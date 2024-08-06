@@ -3,6 +3,7 @@ function window_corners=roi_selection(pic)
     window_corners=[];
     f=figure;
     imshow(pic)
+    title("Select The Region of Interest by placing the rectangle")
     roi=images.roi.Rectangle(gca);
     addlistener(roi,"MovingROI",@allevents);
     addlistener(roi,"ROIMoved",@allevents);
@@ -23,7 +24,7 @@ function window_corners=roi_selection(pic)
     evname = evt.EventName;
         switch evname
             case "MovingROI"
-                disp("ROI moving..");
+%                 disp("ROI moving..");
     
             case "ROIMoved"
                 disp("ROI moved. Current position:  "+...
