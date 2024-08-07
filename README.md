@@ -49,7 +49,7 @@ _dbscan_clustering.m_
 
 ![Another one](example_images/image-1.png)
 
-## 3DsurfaceMapping
+## 3DsurfaceMapping, NOTICE: NEEDS MATLAB 2022 or newer!!
 
 
 **General comments:**
@@ -64,6 +64,10 @@ _dbscan_clustering.m_
 _apical_surface_to_tif_output.m_
 
 * isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
+
+
+## unfinished tools include tools that were developed but never made it into usable tools
+
 
 ### Example outputs
 
