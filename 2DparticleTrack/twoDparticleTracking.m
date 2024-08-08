@@ -24,10 +24,9 @@ if ltc ~="tif"
     %which need tracking are on some else channel, one needs to change the 
     %number accordingly (2 as default).                        
 
-
-    series=squeeze(separateChannels(:,:,:,channel));    %comment this line
+    series=squeeze(separateChannels(:,:,:,channel));
 else
-    series=separateChannels(:,:,channel:3:end);                      %      <-- assumption of 3 channels, if only one channle change 3->1
+    series=separateChannels(:,:,channel:3:end);                      %      <-- assumption of 3 channels
     info=imfinfo(fullPathsCell{1,1});
     pixPerUm=info.XResolution;
 end
@@ -65,7 +64,8 @@ chosen_series=series(:,:,27:50);
 answer=input("Do you want to choose the threshold yourself?(1 for yes/0 for no): ");
 
 if answer==1
-    chosen_threshold=threshold_slider(squeeze(chosen_series(:,:,end)));
+    chosen_threshold=threshold_slider(squeeze(chosen_series(:,:,end)),...
+        "Choose threshold with the slider and press save");
     if chosen_threshold==0
         error("Error: Threshold was not chosen!")
     end

@@ -1,8 +1,11 @@
-function chosen_threshold=threshold_slider(image)
+function chosen_threshold=threshold_slider(image,msg)
         
+
+%     figure;
+%     histogram(image(:))
     chosen_threshold=0;
     fig = figure;
-    
+    sgtitle(msg)
     % Define initial values
     minValue = min(image(:));     % Minimum value for the slider
     maxValue = max(image(:));    % Maximum value for the slider
@@ -21,9 +24,11 @@ function chosen_threshold=threshold_slider(image)
     new_im=image;
     new_im(new_im <=initialValue ) = 0;
 
-
+    new_im=adapthisteq(new_im);
     new_im=combine_tracing_and_image(new_im,zeros(...
         size(new_im)),1);
+
+
     imshow(new_im,'Parent',ax2);       % Update the plot
     title(ax2,"Current threshold")
     
@@ -33,14 +38,14 @@ function chosen_threshold=threshold_slider(image)
                            'FontSize',12,...
                            'String', num2str(initialValue));
     
-    slider = uicontrol('Style', 'slider', ...
+    uicontrol('Style', 'slider', ...
                        'Min', minValue, 'Max', maxValue, ...
                        'Value', initialValue, ...
                        'Position', [100, 10, 350, 20], ...
                        'Callback', @(src, event) updatePlot(src, event,ax2,valueLabel));
     
     
-    button= uicontrol('Style','pushbutton',...
+    uicontrol('Style','pushbutton',...
         'Position',[500, 10, 40, 30], ...
         'BackgroundColor','b',...
         'String',"Save", ...
