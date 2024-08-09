@@ -140,9 +140,7 @@ if value==1
     saveastiff(uint8(edm), strcat(folder,'\',foldername,'\euclidean_distance_map3d.tif'), options);
 end
 
-%should permute +90 around z-axis and +90 around x-axis
 dilated_volume=permute(dilated_volume,[2,1,3]);
-dilated_volume=permute(dilated_volume, [1, 3, 2]);
 
 %saving apical surface as tiff
 saveastiff(dilated_volume, strcat(folder,'\',foldername,'\volume_image_of_apical_surface.tif'), options);
