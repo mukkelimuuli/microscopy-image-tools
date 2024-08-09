@@ -1,7 +1,7 @@
 %Extracts the needed data from a .czi microscopy image file
 %to create a 
 
-function separateChannels=dataFromCzi(path)
+function separateChannels=dataFromCzi(path,varargin)
     
         
     CziData = bfopen(path);
@@ -23,7 +23,10 @@ function separateChannels=dataFromCzi(path)
     end
     
     %separateChannels(:,:,:,nbr_of_channels)=separateChannels(:,:,:,nbr_of_channels).*0;
-    
+    if ~isempty(varargin)
+        disp('The dimensions of the file(x y time channels): ')
+        disp(size(separateChannels))
+    end
     %Asks the user if histogram is wanted
     %prompt2="Histogram from the color channels?(1 for yes / 0 for no): ";
     %h=input(prompt2);
