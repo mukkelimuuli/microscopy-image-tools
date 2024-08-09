@@ -1,6 +1,6 @@
 
 %This is the function which creates color image out of .oir files
-function separate_channels=dataFromOir(path,all_time_points)
+function separate_channels=dataFromOir(path,varargin)
     oirData = bfopen(path);
 
     % Read the image data and extract the needed dimensions
@@ -28,8 +28,8 @@ function separate_channels=dataFromOir(path,all_time_points)
     
     %Prompt if all time_samples are wanted in the file
     %prompt = "Do you want all time samples? (1 for yes/ 0 for no): ";
-    YO = all_time_points;%input(prompt);
-    if YO==1
+
+    if ~isempty(varargin)
         disp('The dimensions of the file(x y time channels): ')
         disp(size(separate_channels))
     else
