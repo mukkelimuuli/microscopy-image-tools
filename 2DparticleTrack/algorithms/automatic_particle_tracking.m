@@ -219,8 +219,8 @@ ylabel(ax1,"The euclidean distance (\mum)")
 xlabel(ax1,"The adjacent timepoints")
 
 sgtitle(f2,"The angles between particle locations over time points " + ...
-    "(angle 0 being towards positive x-axis and 90 towards positive "+...
-    "y-axis)",'Color','r')
+    "(angle 0 being towards up and 90 towards negative "+...
+    "x-axis)",'Color','r')
 title(ax2,"Relative to the previous location of the particle")
 ylabel(ax2,"The angle (degrees)")
 xlabel(ax2,"The adjacent timepoints")
