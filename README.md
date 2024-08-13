@@ -66,6 +66,22 @@ _apical_surface_to_tif_output.m_
 * isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
 
 
+## POSparticlePullingStatistics
+
+**General comments:**
+
+    -POSparticlePullingStatistics folder contains the actual tool file of POS_particle_pulling_statistics.m and the dist_calc.m file for distance calculation.
+
+    -THE ONLY FILE WHICH NEEDS TO BE RUN IS POS_particle_pulling_statistics.m, other files only need to be on the MATLAB path.
+
+**Adjustable parameters in the tool by files:**
+
+_apical_surface_to_tif_output.m_
+
+* The wanted channel as a parameter of POS=separateChannels(:,:,:,1);, where 1 is the default. Also the 3. dimension can be changed to select the time points one wants.
+
+![Another one](example_images/image-5.png)
+
 ## unfinished tools include tools that were developed but never made it into usable tools
 
 
