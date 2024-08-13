@@ -65,6 +65,12 @@ _apical_surface_to_tif_output.m_
 
 * isovalue on the row 32, it defines where the threshold is for "segmenting" the cell surface. 
 
+### Example outputs
+
+![An example image for 3DsurfaceMapping](example_images/image-3.png)
+
+![Euclidean distance map](example_images/image-4.png)
+
 
 ## POSparticlePullingStatistics
 
@@ -80,16 +86,14 @@ _apical_surface_to_tif_output.m_
 
 * The wanted channel as a parameter of POS=separateChannels(:,:,:,1);, where 1 is the default. Also the 3. dimension can be changed to select the time points one wants.
 
+### Example output
+
 ![Another one](example_images/image-5.png)
 
 ## unfinished tools include tools that were developed but never made it into usable tools
 
 
-### Example outputs
 
-![An example image for 3DsurfaceMapping](example_images/image-3.png)
-
-![Euclidean distance map](example_images/image-4.png)
 
 
 **LICENSE: See license.txt file**
