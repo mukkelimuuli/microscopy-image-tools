@@ -41,7 +41,7 @@ timepoints=size(POS_ROI,3);
 for i= 1:timepoints
     summed_up=summed_up+uint16(POS_ROI(:,:,i));
 end
-averaged_image=uint8(summed_up./timepoints);
+averaged_image=imfill(uint8(summed_up./timepoints));
 
 %Selecting the intensity treshold
 intensity_threshold=threshold_slider(averaged_image,...
