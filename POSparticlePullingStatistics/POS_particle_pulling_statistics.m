@@ -95,7 +95,9 @@ myfun = @(x) median(x(:),'omitnan');
 %Going through all the time points 
 Area=zeros(timepoints,1);
 distances=zeros(size(s_eca,1),timepoints);
+Outern_A_ratio=zeros(timepoints,1);
 
+%Most of the calculation is done inside this loop!
 for i=1:timepoints
     I=squeeze(POS_ROI(:,:,i));
 
@@ -108,6 +110,7 @@ for i=1:timepoints
     A_calc=fI;
     A_calc(linear_indices)=0;
     Area(i)=sum(A_calc(:) == 1)*AreaPerPix;
+    Outern_A_ratio(i)=sum(A_calc(:) == 1)/sum(fI(:) == 1);
     
     %The distances of the center and the outer edge of the pulling part of
     %the POS particles
@@ -117,22 +120,22 @@ end
 %%
 %If not needed, this section can be commented out, it only shows the steps
 %of the algorithm in images for the user to see how it works
-figure;
-subplot(131);
+f1=figure;
+subplot(131,'Parent',f1);
 imshow(squeeze(separateChannels(:,:,1)))
 
-subplot(132)
+subplot(132,'Parent',f1)
 imshow(center)
 
-subplot(133)
+subplot(133,'Parent',f1)
 imshow(A_calc)
 sgtitle({"Phases of the algorithm: noisy image, extracted center from"+...
     " averaged image and the part of POS"," experiencing the pulling, "+...
     "i.e. the alternating area around the center (from a single time point)"})
 %%
 
-figure;
-ax1=subplot(2,1,1);
+f2=figure;
+ax1=subplot(3,1,1,'Parent',f2);
 stem(ax1,1:timepoints,Area,'filled')
 grid(ax1,"minor")
 
@@ -143,7 +146,7 @@ legend_str = sprintf('Mean: %.2f, Std: %.2f, Var: %.2f', ...
     mean(Area), std(Area), var(Area));
 legend(ax1, 'show',legend_str);
 
-ax2=subplot(212);
+ax2=subplot(3,1,2,'Parent',f2);
 mean_distances = mean(distances, 1);
 
 stem(ax2,1:timepoints,mean_distances,'filled')
@@ -157,4 +160,57 @@ ylabel(ax2,"Distance (\mum)")
 legend_str2 = sprintf('Mean: %.2f, Std: %.2f, Var: %.2f',...
     mean(mean_distances),std(mean_distances),var(mean_distances));
 legend(ax2, 'show',legend_str2);
+
+ax3=subplot(3,1,3,'Parent',f2);
+stem(ax3,1:timepoints,Outern_A_ratio,'filled')
+grid(ax3,"minor")
+
+title(ax3,"The ratio between the alternating area and the whole area")
+xlabel(ax3,"Time as timepoints")
+ylabel(ax3,"The ratio")
+legend_str3 = sprintf('Mean: %.2f, Std: %.2f, Var: %.2f',...
+    mean(Outern_A_ratio),std(Outern_A_ratio),var(Outern_A_ratio));
+legend(ax3, 'show',legend_str3)
+
+%The folder where this file runs is chosen to be the directory for saving
+%the output files. One can alternate the folder name e.g. if multiple runs 
+%are needed.
+[folder, ~, ~] = fileparts(which('POS_particle_pulling_statistics.m'));
+foldername='POS_particle_pulling_results';
+mkdir(folder,foldername);
+
+%Saving the plots into an image
+f1.WindowState='fullscreen';
+f2.WindowState='fullscreen';
+saveas(f1,strcat(folder,'\',foldername,'\steps.png'))
+saveas(f2,strcat(folder,'\',foldername,'\data.png'))
+f1.WindowState='normal';
+f2.WindowState='normal';
+
+% Create the alphabet for sheet indexing
+A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+%Writing the data into an .xlsx file
+fname = strcat(folder, '\', foldername, '\data_from_subplots.xlsx');
+delete(fname)
+
+% Write the data into .xls file
+writematrix("The alternating area outside of the POS particle center"+...
+    "(one column per time series)", fname);
+writematrix(Area,fname,'Range', strcat(A(1), int2str(2)))
+
+
+writematrix("The mean distances of the POS center edge and the outern"+...
+    " edge of the pulling part of the particle (the angle of "+...
+    "calculation is towards the center point of the center)", fname,...
+    'Range', strcat(A(1), int2str(3+timepoints)));
+writematrix(mean_distances',fname,'Range', strcat(A(1), ...
+    int2str(4+timepoints)))
+
+writematrix("The ratio between alternating part of the POS particle"+...
+    " and the center part of the particle", fname,...
+    'Range', strcat(A(1), int2str(5+timepoints*2)));
+writematrix(Outern_A_ratio,fname,'Range', strcat(A(1), ...
+    int2str(6+timepoints*2)))
+
 
