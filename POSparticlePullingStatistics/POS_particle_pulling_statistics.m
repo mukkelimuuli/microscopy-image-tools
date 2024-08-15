@@ -147,6 +147,8 @@ legend_str = sprintf('Mean: %.2f, Std: %.2f, Var: %.2f', ...
 legend(ax1, 'show',legend_str);
 
 ax2=subplot(3,1,2,'Parent',f2);
+
+%VAR CAN BE CALCULATED BY REPLACING THE MEAN FUNCTION WITH VAR
 mean_distances = mean(distances, 1);
 
 stem(ax2,1:timepoints,mean_distances,'filled')
