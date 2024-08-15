@@ -106,6 +106,9 @@ for i=1:timepoints
     %results are not pleasing    v
     fI = imbinarize(nlfilter(I,[7 7],myfun));
     
+    %If filtering isn't needed, one can use the following line instead
+    %fI = imbinarize(I);%nlfilter(I,[7 7],myfun));
+    
     %Calculating the area of the alternating part of the POS particle
     A_calc=fI;
     A_calc(linear_indices)=0;
